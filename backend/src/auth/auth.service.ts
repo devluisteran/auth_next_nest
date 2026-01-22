@@ -3,11 +3,15 @@ import { UsersService } from 'src/users/users.service';
 import { RegisterDto } from './dto/register.dto';
 import { PasswordService } from 'src/shared/services/password.service';
 import { LoginDto } from './dto/login.dto';
+import { TokenService } from 'src/shared/services/token.service';
 
 @Injectable()
 export class AuthService {
 
-    constructor(private readonly usersService: UsersService, private readonly passwordService: PasswordService){
+    constructor(private readonly usersService: UsersService, 
+        private readonly passwordService: PasswordService,
+        private readonly tokenService: TokenService
+    ){
 
     }
     async register(registerDto: RegisterDto){
@@ -33,11 +37,15 @@ export class AuthService {
             throw new UnauthorizedException("Credenciales no válidas");
         }
 
-        return {
+        const generateToken = this.tokenService.generateToken({
             id: userFound.id,
+        });
+
+        return {
             name: userFound.name,
             email: userFound.email,
-            role: userFound.role
+            role: userFound.role,
+            token: generateToken
         }
     }
 }
