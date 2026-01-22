@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { response } from 'express';
 import { Observable } from 'rxjs';
 import { TokenService } from 'src/shared/services/token.service';
@@ -17,13 +17,13 @@ export class AuthGuard implements CanActivate {
     const token = this.extractToken(request.headers.authorization);
 
     if(!token){
-      return false;
+      throw new UnauthorizedException("No autorizado");
     }
 
     const isValid = this.verifyToken(token);
 
     if(!isValid){
-      return false;
+      throw new UnauthorizedException("No autorizado");
     }
     
     this.verifyTokenRefresh(token,response);
@@ -59,7 +59,7 @@ export class AuthGuard implements CanActivate {
       if(expTime - currentTime < 300){
 
         const newToken = this.tokenService.refreshToken({id:payload['id']});
-        
+
         response.setHeader('Authorization', `Bearer ${newToken}`);
       }
     }
