@@ -15,17 +15,21 @@ export class UsersService {
 
   }
 
-  create(createUserDto: CreateUserDto) {
-    const user = this.userRepository.create(createUserDto);
-    return this.userRepository.save(user);
+  async create(createUserDto: CreateUserDto) {
+    const user = await this.userRepository.create(createUserDto);
+    return await this.userRepository.save(user);
+  }
+
+  async findByEmailIncludingDeleted(email: string) {
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .withDeleted() 
+      .where('user.email = :email', { email })
+      .getOne();
   }
 
   async findByEmail(email: string){
     const userFound = await this.userRepository.findOneBy({email});
-
-    if(!userFound){
-      throw new NotFoundException("User not found");
-    }
 
     return userFound;
   }
