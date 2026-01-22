@@ -7,16 +7,16 @@ export class User {
     id: number;
 
     @Column()
-    name: String;
+    name: string;
 
     @Column({unique: true, nullable: false})
-    email: String;
+    email: string;
 
     @Column({nullable: false})
-    password: String;
+    password: string;
 
     @Column({default: "user"})
-    role: String;
+    role: string;
 
     @CreateDateColumn({default: () => 'CURRENT_TIMESTAMP'})
     createdAt: Date;
