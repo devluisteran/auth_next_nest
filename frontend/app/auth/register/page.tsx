@@ -1,14 +1,59 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
+import { serviceAuth } from '@/app/service/authService';
+import { RegisterPayload } from '@/app/types/auth';
+import {toast} from "sonner"
+import { useRouter } from 'next/navigation';
 
 function RegisterPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError]= useState(null);
   const {register,handleSubmit, formState:{errors}} = useForm();
+
+  const handleSuccess = () => {
+    toast.success('¡Operación exitosa!', {
+      description: 'Los datos se guardaron correctamente',
+      action: {
+        label: 'Deshacer',
+        onClick: () => console.log('Deshacer'),
+      },
+    });
+  };
+
+  const handleError = () => {
+    toast.error('Error al guardar', {
+      description: 'Intenta de nuevo más tarde',
+      duration: 6000,
+    });
+  };
+
+  const registerUser = async(data : RegisterPayload)=>{
+    try {
+        const response = await serviceAuth.register(data);
+        if(response.success){
+            handleSuccess();
+
+            router.push('/auth/login');
+        }
+    } catch (error) {
+        handleError();
+    }
+  }
 
   const onSubmit = handleSubmit(data=>{
     console.log(data);
-    
+
+    const payload: RegisterPayload = {
+        userName: data.userName,
+        email: data.email,
+        password: data.password,
+        confirmPassword: data.confirmPassword
+    }
+    registerUser(payload);    
   });
+
   return (
     <div className='h-[calc(100vh-7rem)] flex justify-center items-center'>
       <form action="" onSubmit={onSubmit} className='w-1/4'>
