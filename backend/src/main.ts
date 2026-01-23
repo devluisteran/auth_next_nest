@@ -26,7 +26,12 @@ async function bootstrap() {
     })
   );
 
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:3000', 
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Authorization, X-Requested-With',
+  });
   
   app.setGlobalPrefix('api');
   await app.listen(process.env.PORT ?? 4000);
