@@ -22,7 +22,13 @@ export class AuthService {
         }
         const hashPassword = await this.passwordService.hashPassword(registerDto.password);
         registerDto.password = hashPassword;
-        return await this.usersService.create(registerDto);
+        const newUser = await this.usersService.create(registerDto);
+        return {
+            name: newUser.name,
+            email: newUser.email,
+            status:true,
+            message:"User registered successfully"
+        }
     }
 
     async login(loginDto: LoginDto){
