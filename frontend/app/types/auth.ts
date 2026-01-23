@@ -1,8 +1,7 @@
 export interface RegisterPayload{
-    userName: string;
+    name: string;
     email: string;
     password: string;
-    confirmPassword: string;
 }
 
 export interface ApiResponse<T>{

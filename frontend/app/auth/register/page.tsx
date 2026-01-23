@@ -22,9 +22,9 @@ function RegisterPage() {
     });
   };
 
-  const handleError = () => {
-    toast.error('Error al guardar', {
-      description: 'Intenta de nuevo más tarde',
+  const handleError = (message ="Error al guardar", description="Intenta de nuevo más tarde") => {
+    toast.error(message, {
+      description: description,
       duration: 6000,
     });
   };
@@ -37,19 +37,26 @@ function RegisterPage() {
 
             router.push('/auth/login');
         }
-    } catch (error) {
-        handleError();
+    } catch (error: any) {
+        console.log("error", error.response?.data);
+        handleError('Error al registrar usuario', error.response?.data?.message || 'Intenta de nuevo más tarde');
     }
   }
 
   const onSubmit = handleSubmit(data=>{
-    console.log(data);
+
+     if(data.password !== data.confirmPassword){
+        toast.error('Las contraseñas no coinciden', {
+            description: 'Por favor verifica las contraseñas',
+            duration: 6000,
+          });
+        return;
+    }
 
     const payload: RegisterPayload = {
-        userName: data.userName,
+        name: data.userName,
         email: data.email,
         password: data.password,
-        confirmPassword: data.confirmPassword
     }
     registerUser(payload);    
   });
