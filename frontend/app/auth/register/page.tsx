@@ -32,7 +32,7 @@ function RegisterPage() {
   const registerUser = async(data : RegisterPayload)=>{
     try {
         const response = await serviceAuth.register(data);
-        if(response.success){
+        if(response.status){
             handleSuccess();
 
             router.push('/auth/login');
