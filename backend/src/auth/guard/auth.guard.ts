@@ -59,7 +59,7 @@ export class AuthGuard implements CanActivate {
       if(expTime - currentTime < 300){
 
         const newToken = this.tokenService.refreshToken({id:payload['id']});
-
+        this.tokenService.setTokenCookies(response,newToken);
         response.setHeader('Authorization', `Bearer ${newToken}`);
       }
     }

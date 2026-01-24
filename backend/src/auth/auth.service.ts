@@ -31,7 +31,7 @@ export class AuthService {
         }
     }
 
-    async login(loginDto: LoginDto){
+    async login(loginDto: LoginDto, response: any){
         const userFound = await this.usersService.findByEmail(loginDto.email);
         if(!userFound){
             throw new UnauthorizedException("El correo no es válido");
@@ -46,6 +46,8 @@ export class AuthService {
         const generateToken = this.tokenService.generateToken({
             id: userFound.id,
         });
+
+        this.tokenService.setTokenCookies(response,generateToken);
 
         return {
             name: userFound.name,
