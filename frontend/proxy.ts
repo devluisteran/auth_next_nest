@@ -3,9 +3,9 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const routesProtected= ["/dashboard/:path*"];
-const routesAuth= ["/auth/login","/register"];
+const routesAuth= ["/auth/:path*"];
 
-export function middleware(request: NextRequest){
+export function proxy(request: NextRequest){
 
     const token = request.cookies.get("access_token")?.value || null;
 
@@ -23,7 +23,7 @@ export function middleware(request: NextRequest){
     console.log("Token found:", token);
     const isAuthRoute = routesAuth.some(route=>{ 
         console.log("Checking auth route:", route, "against", pathname);
-       return route === pathname
+       return pathname.startsWith(route.replace(":path*",""));
     });
 
     if(token && isAuthRoute){
@@ -36,5 +36,5 @@ export function middleware(request: NextRequest){
 }
 
 export const config = {
-    matcher: ["/dashboard/:path*","/login","/register"]
+    matcher: ["/dashboard/:path*","/auth/:path*"]
 }
