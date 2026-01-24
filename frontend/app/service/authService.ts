@@ -14,7 +14,9 @@ export const serviceAuth = {
 
         return response.data;
     },
-    logout: () : void=>{
+    logout: async () : Promise<void>=>{
+        const response = await axios.post("/auth/logout");
+        console.log(response.data);
         serviceAuth.removeToken();
         if(typeof window !== "undefined"){
             window.location.href = "/auth/login"; 

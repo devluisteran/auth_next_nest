@@ -21,6 +21,20 @@ export class AuthController {
         return data;
     }
 
+    @Post('logout')
+    async logout(@Res({passthrough: true}) response: any){
+
+        response.clearCookie('access_token', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+            path: '/',
+        });
+
+        return {message: "Logout successful"};
+       
+    }
+
     @Get('profile')
     @UseGuards(AuthGuard)
     getProfile(){
