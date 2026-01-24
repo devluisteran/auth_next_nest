@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe,BadRequestException } from '@nestjs/common';
 import { error } from 'console';
+import cookieParser from 'cookie-parser';
 
 
 async function bootstrap() {
@@ -30,9 +31,9 @@ async function bootstrap() {
     origin: 'http://localhost:3000', 
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Authorization, X-Requested-With',
+    allowedHeaders: 'Content-Type, Authorization, X-Requested-With, Cookie',
   });
-  
+  app.use(cookieParser());
   app.setGlobalPrefix('api');
   await app.listen(process.env.PORT ?? 4000);
 }
