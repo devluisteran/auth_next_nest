@@ -17,7 +17,7 @@ function RegisterPage() {
       description: 'Los datos se guardaron correctamente',
       action: {
         label: 'Deshacer',
-        onClick: () => console.log('Deshacer'),
+        onClick: () => {},
       },
     });
   };
@@ -38,7 +38,6 @@ function RegisterPage() {
             router.push('/auth/login');
         }
     } catch (error: any) {
-        console.log("error", error.response?.data);
         handleError('Error al registrar usuario', error.response?.data?.message || 'Intenta de nuevo más tarde');
     }
   }

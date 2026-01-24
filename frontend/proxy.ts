@@ -20,9 +20,7 @@ export function proxy(request: NextRequest){
         url.pathname = "auth/login";
         return NextResponse.redirect(url);
     }
-    console.log("Token found:", token);
     const isAuthRoute = routesAuth.some(route=>{ 
-        console.log("Checking auth route:", route, "against", pathname);
        return pathname.startsWith(route.replace(":path*",""));
     });
 
