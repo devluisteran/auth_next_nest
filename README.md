@@ -129,6 +129,7 @@ El frontend estará disponible en:
 
 ```
 http://localhost:3000
+para login dirigete a http://localhost:3000/auth/login
 ```
 
 > Nota: Ajusta los puertos según tu configuración si es necesario.
