@@ -8,7 +8,9 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     TypeOrmModule.forRoot({
       type: "sqlite",
-      database: "database.sqlite",
+      database: process.env.NODE_ENV === 'production' 
+        ? '/app/data/database.sqlite' 
+        : 'database.sqlite',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
       logging: true,
